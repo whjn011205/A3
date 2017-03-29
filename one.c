@@ -23,6 +23,7 @@ open: onebyte_open,
 release: onebyte_release
 };
 
+int dev_size=10;
 char *onebyte_data = NULL;
 int onebyte_open(struct inode *inode, struct file *filep)
 {
@@ -37,8 +38,11 @@ int onebyte_release(struct inode *inode, struct file *filep)
 ssize_t onebyte_read(struct file *filep, char *buf, size_t count, loff_t *f_pos)
 {
 /*please complete the function on your own*/
+	if((*f_pos+count)<=dev_size){
+		copy_to_user	
+	}
 	if(*f_pos==0){
-		copy_to_user(buf,onebyte_data,1);
+		copy_to_user(buf,onebyte_data,dev_size);
 		*f_pos +=1;
 		return 1;
 	} 
@@ -81,7 +85,7 @@ int result;
 // kmalloc is just like malloc, the second parameter is
 // the type of memory to be allocated.
 // To release the memory allocated by kmalloc, use kfree.
-	onebyte_data = kmalloc(sizeof(char), GFP_KERNEL);
+	onebyte_data = kmalloc(sizeof(char)*dev_size, GFP_KERNEL);
 	if (!onebyte_data) {
 	onebyte_exit();
 	// cannot allocate memory
